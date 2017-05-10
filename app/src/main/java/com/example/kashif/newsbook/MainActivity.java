@@ -1,6 +1,7 @@
 package com.example.kashif.newsbook;
 
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.view.ActionMode;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements Callback<SourceRe
 
         networkStateReceiver = new NetworkStateReceiver();
         networkStateReceiver.addListener(this);
-        this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+        this.registerReceiver(networkStateReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar_main);
@@ -133,5 +134,15 @@ public class MainActivity extends AppCompatActivity implements Callback<SourceRe
     @Override
     public void onFailure(Call<SourceResponse> call, Throwable t) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            this.unregisterReceiver(networkStateReceiver);
+        } catch (final Exception exception) {
+
+        }
     }
 }

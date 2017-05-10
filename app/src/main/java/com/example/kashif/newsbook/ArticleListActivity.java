@@ -181,4 +181,14 @@ public class ArticleListActivity extends AppCompatActivity implements Callback<A
     public void hideNoInternetMessageText() {
         noInternetMessageDisplayTextview.setVisibility(View.GONE);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            this.unregisterReceiver(networkStateReceiver);
+        } catch (final Exception exception) {
+
+        }
+    }
 }

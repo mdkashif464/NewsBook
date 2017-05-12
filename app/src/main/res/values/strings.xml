@@ -1,3 +1,11 @@
 <resources>
+
     <string name="app_name">News Book</string>
+
+    <!-- define strings here that are going to be used further -->
+    <string name="loading_articles">Loading Articles</string>
+    <string name="no_internet_message">No Internet ! Please connect...</string>
+    <string name="loading_source_list">Loading Source List</string>
+    <string name="full_story_link_text">Read full Story...</string>
+
 </resources>

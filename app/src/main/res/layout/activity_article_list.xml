@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="0dp"
     android:orientation="vertical"
-    android:background="#FFDFDCDF"
+    android:background="@color/appBackgroundColor"
     tools:context="com.example.kashif.newsbook.ArticleListActivity">
 
 
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         app:spb_sections_count="4"
-        app:spb_color="#FF0000"
+        app:spb_color="@color/smoothPrrogressBarColor"
         app:spb_interpolator="spb_interpolator_acceleratedecelerate"
         app:spb_speed="2.0"
         app:spb_stroke_width="4dp"
@@ -63,7 +63,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="Loading Articles"
+            android:text="@string/loading_articles"
+            android:textColor="@android:color/white"
             android:visibility="gone"/>
 
     </LinearLayout>
@@ -74,7 +75,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="No Internet ! Please connect..."
+        android:text="@string/no_internet_message"
+        android:textColor="@android:color/white"
         android:gravity="center"
         android:textSize="25sp"
         android:visibility="gone"/>

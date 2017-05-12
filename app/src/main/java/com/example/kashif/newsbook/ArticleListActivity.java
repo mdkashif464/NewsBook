@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kashif.newsbook.ApiClasses.ArticleLists;
 import com.example.kashif.newsbook.ApiClasses.ArticleResponse;
@@ -60,9 +61,6 @@ public class ArticleListActivity extends AppCompatActivity implements Callback<A
         noInternetMessageDisplayTextview = (TextView) findViewById(R.id.noInternetMessage_tv);
         smoothProgressBar = (SmoothProgressBar) findViewById(R.id.smoothProgressBar);
 
-        JazzyRecyclerViewScrollListener listener = new JazzyRecyclerViewScrollListener();
-        listener.setTransitionEffect(new FlipEffect());
-
 
         Intent intent = getIntent();
         SOURCE_ID = intent.getExtras().getString("sourceId");
@@ -71,39 +69,38 @@ public class ArticleListActivity extends AppCompatActivity implements Callback<A
         getSupportActionBar().setTitle(SOURCE_NAME);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        articleListAdapter = new ArticleListAdapter();
         showArticleListRecyclerView = (RecyclerView) findViewById(R.id.showArticleList_rV);
+        showArticleListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        JazzyRecyclerViewScrollListener listener = new JazzyRecyclerViewScrollListener();
+        listener.setTransitionEffect(new FlipEffect());
         showArticleListRecyclerView.setOnScrollListener(listener);
 
-        showArticleListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        articleListAdapter = new ArticleListAdapter();
         showArticleListRecyclerView.setAdapter(articleListAdapter);
 
-        // showArticlesList();
     }
 
 
     @Override
     public void networkAvailable() {
         Log.d("kashif", "Connected!");
-    /* TODO: Your connection-oriented stuff here */
+        // fetching Article Lists
+        showArticlesList();
         hideNoInternetMessageText();
         showCenterProgressBar();
-        showArticlesList();
     }
 
     @Override
     public void networkUnavailable() {
         Log.d("kashif", "Not Connected!");
-    /* TODO: Your disconnection-oriented stuff here */
         hideCenterProgressBar();
+        hideSmoothProgressBar();
         showNoInternetMessageText();
     }
 
-
+    // method that will be called to fetch source list
     public void showArticlesList() {
-
-        Log.d("refresh", "showArticleList called");
         Call<ArticleResponse> call = NewsApiClient.getClient().showArticlesList("4dd25d1cb54c4f368e7aa47e9fd6b88a", SOURCE_ID, "");
         call.enqueue(this);
     }
@@ -111,7 +108,6 @@ public class ArticleListActivity extends AppCompatActivity implements Callback<A
     @Override
     public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
 
-        Log.d("refresh", "onResponse called");
         // Hiding the progressBar here
         hideCenterProgressBar();
         hideSmoothProgressBar();
@@ -125,15 +121,18 @@ public class ArticleListActivity extends AppCompatActivity implements Callback<A
 
         }
 
-
         if (response.isSuccessful()) {
+
             articleListAdapter.setList((ArrayList<ArticleLists>) response.body().articleLists);
+        }
+        else {
+            Toast.makeText(this,response.message(), Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void onFailure(Call<ArticleResponse> call, Throwable t) {
-
+        hideSmoothProgressBar();
     }
 
     @Override
@@ -147,13 +146,26 @@ public class ArticleListActivity extends AppCompatActivity implements Callback<A
     public boolean onOptionsItemSelected(MenuItem item) {
         int clickedItemId = item.getItemId();
         if (clickedItemId == R.id.action_refresh) {
-            Log.d("refresh", " Refresh button clicked");
-            showSmoothProgressBar();
             showArticlesList();
+            showSmoothProgressBar();
+            hideCenterProgressBar();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            this.unregisterReceiver(networkStateReceiver); //unregister receiver if activity gets destroyed
+        } catch (final Exception exception) {
+
+        }
+    }
+
 
 
     public void showCenterProgressBar() {
@@ -182,13 +194,4 @@ public class ArticleListActivity extends AppCompatActivity implements Callback<A
         noInternetMessageDisplayTextview.setVisibility(View.GONE);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        try {
-            this.unregisterReceiver(networkStateReceiver);
-        } catch (final Exception exception) {
-
-        }
-    }
 }

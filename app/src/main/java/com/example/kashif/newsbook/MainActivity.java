@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kashif.newsbook.ApiClasses.NewsApi;
 import com.example.kashif.newsbook.ApiClasses.NewsApiClient;
@@ -59,15 +60,14 @@ public class MainActivity extends AppCompatActivity implements Callback<SourceRe
         progressBar_TextView = (TextView) findViewById(R.id.progressText_tv);
         noInternetMessageDisplayTextview = (TextView) findViewById(R.id.noInternetMessage_tv);
 
+        sourceListRecyclerView = (RecyclerView) this.findViewById(R.id.sourceList_rView);
+        sourceListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         JazzyRecyclerViewScrollListener listener = new JazzyRecyclerViewScrollListener();
         listener.setTransitionEffect(new GrowEffect());
-
-        sourceListAdapter = new SourceListAdapter();
-        sourceListRecyclerView = (RecyclerView) this.findViewById(R.id.sourceList_rView);
-
         sourceListRecyclerView.setOnScrollListener(listener);
 
-        sourceListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        sourceListAdapter = new SourceListAdapter();
         sourceListRecyclerView.setAdapter(sourceListAdapter);
 
     }
@@ -75,31 +75,20 @@ public class MainActivity extends AppCompatActivity implements Callback<SourceRe
     @Override
     public void networkAvailable() {
         Log.d("kashif", "Connected!");
-    /* TODO: Your connection-oriented stuff here */
+        // fetching Source Lists
+        fetchNewsLists();
         noInternetMessageDisplayTextview.setVisibility(View.GONE);
         showProgressBar();
-        fetchNewsLists();
     }
 
     @Override
     public void networkUnavailable() {
         Log.d("kashif", "Not Connected!");
-    /* TODO: Your disconnection-oriented stuff here */
         hideProgressBar();
         noInternetMessageDisplayTextview.setVisibility(View.VISIBLE);
     }
 
-    public void showProgressBar() {
-        progressBar.setVisibility(View.VISIBLE);
-        progressBar_TextView.setVisibility(View.VISIBLE);
-    }
-
-    public void hideProgressBar() {
-        progressBar.setVisibility(View.GONE);
-        progressBar_TextView.setVisibility(View.GONE);
-    }
-
-
+    // method that will be called to fetch source list
     public void fetchNewsLists() {
         Call<SourceResponse> call = NewsApiClient.getClient().fetchsourceLists("", "", "");
         call.enqueue(this);
@@ -120,14 +109,10 @@ public class MainActivity extends AppCompatActivity implements Callback<SourceRe
 
         if (response.isSuccessful()) {
 
-            Log.d("sourceList", response.body().status);
-            Log.d("sourceList", "Sources are " + response.body().newsSourceLists.get(0).getName());
-
             sourceListAdapter.setList((ArrayList<NewsSourceLists>) response.body().newsSourceLists);
-
-        } else {
-
-            Log.d("sourceList", response.message());
+        }
+        else {
+            Toast.makeText(this,response.message(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -140,9 +125,19 @@ public class MainActivity extends AppCompatActivity implements Callback<SourceRe
     protected void onDestroy() {
         super.onDestroy();
         try {
-            this.unregisterReceiver(networkStateReceiver);
+            this.unregisterReceiver(networkStateReceiver); //unregister receiver if activity gets destroyed
         } catch (final Exception exception) {
 
         }
+    }
+
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar_TextView.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
+        progressBar_TextView.setVisibility(View.GONE);
     }
 }

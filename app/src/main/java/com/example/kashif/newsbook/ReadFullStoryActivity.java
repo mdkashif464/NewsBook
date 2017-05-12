@@ -3,6 +3,7 @@ package com.example.kashif.newsbook;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,20 +36,18 @@ public class ReadFullStoryActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle(sourceName);
 
+        fullStoryWebView.setBackgroundColor(Color.BLACK);
         fullStoryWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                Log.d("kashif", "onPage finished Called");
                 hideProgressBar();
-
             }
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
                 showProgressBar();
-                Log.d("kashif", "onPage started Called");
             }
         });
 
@@ -57,13 +56,6 @@ public class ReadFullStoryActivity extends AppCompatActivity {
         fullStoryWebView.requestFocus();
     }
 
-    public void showProgressBar() {
-        smoothProgressBar.setVisibility(View.VISIBLE);
-    }
-
-    public void hideProgressBar() {
-        smoothProgressBar.setVisibility(View.GONE);
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -85,6 +77,15 @@ public class ReadFullStoryActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+
+    public void showProgressBar() {
+        smoothProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgressBar() {
+        smoothProgressBar.setVisibility(View.GONE);
     }
 
 }

@@ -5,14 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-/**
- * Created by KASHIF on 3/1/2017.
- */
 public class ArticleResponse {
-
-    @Expose
-    @SerializedName("source")
-    public String source;
 
     @Expose
     @SerializedName("articles")

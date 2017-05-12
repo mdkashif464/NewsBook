@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-   <!-- <color name="splashScreen">#FFDFDCDF</color> -->
+    <!-- define colors here that are going to be used further -->
     <color name="splashScreen">@color/colorAccent</color>
+    <color name="appBackgroundColor">#012e0e</color>
+    <color name="rowDividerColor">#ba0123</color>
+    <color name="smoothPrrogressBarColor">#FF0000</color>
+    <color name="fullStoryLinkColor">#c8d908</color>
+
 </resources>

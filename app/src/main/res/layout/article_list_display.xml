@@ -6,13 +6,14 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#0375a3"/>
+        android:background="@color/rowDividerColor"/>
 
     <LinearLayout
         android:id="@+id/sourceDisplayLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@color/appBackgroundColor">
 
 
         <ImageView
@@ -30,7 +31,7 @@
             android:layout_height="87dp"
             android:layout_weight="0.7"
             android:textSize="18sp"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:layout_marginLeft="15dp"
             android:gravity="fill"/>
 

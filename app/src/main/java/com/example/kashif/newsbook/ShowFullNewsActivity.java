@@ -67,11 +67,6 @@ public class ShowFullNewsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-               /* Uri webpage = Uri.parse(fullStoryLink);
-                Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                }*/
                 Intent intent = new Intent(ShowFullNewsActivity.this, ReadFullStoryActivity.class);
                 intent.putExtra("fullStoryLink", fullStoryLink);
                 intent.putExtra("sourceName", sourceName);

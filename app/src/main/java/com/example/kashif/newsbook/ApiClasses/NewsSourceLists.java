@@ -4,9 +4,6 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by KASHIF on 2/28/2017.
- */
 public class NewsSourceLists {
 
     @Expose
@@ -17,9 +14,9 @@ public class NewsSourceLists {
     @SerializedName("name")
     private String name;
 
-    @Expose
+    /*@Expose
     @SerializedName("urlsToLogos")
-    private SourceListLogo sourceListLogo;
+    private SourceListLogo sourceListLogo;*/
 
     public String getId() {
         return id;
@@ -29,7 +26,7 @@ public class NewsSourceLists {
         return name;
     }
 
-    public String getSourceLogo() {
+   /* public String getSourceLogo() {
         return sourceListLogo.logo_url;
     }
 
@@ -37,5 +34,5 @@ public class NewsSourceLists {
         @Expose
         @SerializedName("small")
         private String logo_url;
-    }
+    }*/
 }
